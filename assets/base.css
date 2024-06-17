@@ -3587,3 +3587,10 @@ details-disclosure > details {
   margin: auto;
   padding: 20px;
 }
+
+.container-collection img {
+  width: 100%;
+  max-width: 200px;
+  height: 100%;
+  object-fit: cover;
+}
