@@ -1,5 +1,11 @@
 {
   "sections": {
+    "test_section": {
+      "type": "test-section"
+    },
+    "section-collection": {
+      "type": "section-collection"
+    },
     "image_banner": {
       "type": "image-banner",
       "blocks": {
@@ -200,6 +206,8 @@
     }
   },
   "order": [
+    "test_section",
+    "section-collection",
     "image_banner",
     "rich_text",
     "featured_collection",
