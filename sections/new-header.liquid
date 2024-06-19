@@ -33,576 +33,235 @@
   </nav>
 {% endcomment %}
 
+{% comment %}
+  <header id="home">
+    <nav class="navbar">
+      <div class="logo">
+        <a href="#">Pro-Dev</a>
+        <i id="menu-close" class="fa-solid fa-bars"></i>
+      </div>
+      <div class="navbar-links">
+        <ul class="links">
+          {% for link in section.settings.navigation.links %}
+            <li>
+              <a href="{{ link.url }}">
+                {{ link.title }}
+              </a>
 
-<header id="home">
-  <nav class="navbar">
-    <div class="logo">
-      <a href="#">Pro-Dev</a>
-      <i id="menu-close" class="fa-solid fa-bars"></i>
-    </div>
-    <div class="navbar-links">
-      <ul class="links">
-        {% for link in section.settings.navigation.links %}
-          <li>
-            <a href="{{ link.url }}">
-              {{ link.title }}
-            </a>
+              {% if link.links != blank %}
+                <ul class="sub-menu">
+                  {% for child_link in link.links %}
+                    <li class="more-submenu">
+                      <a href="{{ child_link.url }}">
+                        {{ child_link.title }}
+                      </a>
 
-            {% if link.links != blank %}
-              <ul class="sub-menu">
-                {% for child_link in link.links %}
-                  <li class="more-submenu">
-                    <a href="{{ child_link.url }}">
-                      {{ child_link.title }}
-                    </a>
+                      {% if child_link.links != blank %}
+                        <ul class="sub-menu more-sub-menu">
+                          {% for grandson_link in child_link.links %}
+                            <li>
+                              <a href="{{ grandson_link.url }}">
+                               {{ grandson_link.title }}
+                              </a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      {% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </nav>
+  </header>
+{% endcomment %}
 
-                    {% if child_link.links != blank %}
-                      <ul class="sub-menu more-sub-menu">
-                        {% for grandson_link in child_link.links %}
-                          <li>
-                            <a href="{{ grandson_link.url }}">
-                             {{ grandson_link.title }}
-                            </a>
-                          </li>
-                        {% endfor %}
-                      </ul>
-                    {% endif %}
-                  </li>
-                {% endfor %}
-              </ul>
-            {% endif %}
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
-  </nav>
-</header>
+<nav class="nav">
+  <ul class="nav__list">
+    {% for link in section.settings.navigation.links %}
+      <li>
+        <a href="{{ link.url }}">
+          {{ link.title }}
+        </a>
+        {% if link.links != blank %}
+          <ul>
+            {% for link_2 in link.links %}
+              <li>
+                <a href="{{ link_2.url }}">
+                  {{ link_2.title }}
+                </a>
 
+                {% if link_2.links != blank %}
+                  <ul>
+                    {% for link_3 in link_2.links %}
+                      <li>
+                        <a href="{{ link_3.url }}">
+                          {{ link_3.title }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</nav>
 
 {% schema %}
-  {
-    "name": "Header",
-    "class": "new-header",
-    "tag": "header",
-    "settings": [
-      {
-        "type": "link_list",
-        "id": "navigation",
-        "label": "Navigation Menu Select",
-        "default": "main-menu"
-      }
-    ]
-  }
+{
+  "name": "Header",
+  "class": "new-header",
+  "tag": "header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "navigation",
+      "label": "Navigation Menu Select",
+      "default": "main-menu"
+    }
+  ]
+}
 {% endschema %}
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-  * {
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border- box;
-    font-family: 'Poppins', sans-serif;
+  body {
+    font-family: 'HelveticaNeue', Arial, sans-serif;
+    margin: 0;
   }
 
-  a {
+  .nav {
+    margin-top: 15px;
+  }
+
+  .nav__list {
+    float: left;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+
+  .nav__list a {
+    display: block;
+    color: #333;
     text-decoration: none;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 32px;
+    padding: 0 15px;
   }
 
-  ul {
+  .nav__list li {
+    position: relative;
+    float: left;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav__list li:hover {
+    background-color: gray;
+  }
+
+  .nav__list ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #fff;
+    padding: 0;
     list-style: none;
   }
 
-  html {
-    scroll-behavior: smooth;
+  .nav__list ul li {
+    float: none;
+    width: 200px;
   }
 
-  .container {
-    width: 86%;
-    margin: 0 auto;
+  .nav__list ul a {
+    line-height: 120%;
+    padding: 10px 15px;
   }
 
-  section {
-    padding: 100px 0;
-  }
-
-  /* header section start */
-
-  header {
-    position: fixed;
-    top: 0px;
-    left: 0;
-    background: #5d9fef;
-    height: 70px;
-    width: 100%;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  }
-
-  header.nav-fix {
-    position: fixed;
-    top: 0px;
-    left: 0;
-    background: #1565ca;
-    height: 70px;
-    width: 100%;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    transition: 0.7s;
-  }
-
-  header .navbar {
-    max-width: 1250px;
-    height: 100%;
-    margin: 0 auto;
-    padding: 0 50px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  header .navbar .logo a {
-    color: #fff;
-    font-size: 30px;
-    font-weight: bold;
-  }
-
-  header .navbar .logo i {
-    font-size: 24px;
-    color: #fff;
-    display: none;
-  }
-
-  header .navbar .navbar-links {
-    height: 100%;
-    line-height: 70px;
-  }
-
-  header .navbar .navbar-links .links {
-    display: flex;
-  }
-
-  header .navbar .navbar-links .links li {
-    position: relative;
-    display: flex;
-    align-items: center;
-    padding: 0 14px;
-  }
-
-  header .navbar .navbar-links .links li a {
-    color: #fff;
-    white-space: nowrap;
-    height: 100%;
-  }
-
-  header .navbar .navbar-links .links li > i.fa-chevron-down {
-    height: 100%;
-    line-height: 70px;
-    width: 22px;
-    text-align: center;
-    color: #fff;
-    transition: 0.4s;
-    font-size: 12px;
-  }
-
-  header .navbar .navbar-links .links li:hover > i.fa-chevron-down {
-    transform: rotate(-180deg);
-  }
-
-  header .navbar .navbar-links .links .sub-menu {
-    position: absolute;
-    top: 70px;
-    left: 0;
-    background: #1565ca;
-    line-height: 40px;
-    border-radius: 0 0 4px 4px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    display: none;
-    transition: 0.4s;
-    width: 100%;
-  }
-
-  header .navbar .navbar-links .links .sub-menu li {
-    padding: 0 22px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  header .navbar .navbar-links .links .sub-menu li a {
-    font-weight: 500;
-    width: 100%;
-  }
-
-  header .navbar .navbar-links .links li:hover > .sub-menu {
-    display: block;
-  }
-
-  header .navbar .navbar-links .links .sub-menu li > i.fa-chevron-down {
-    font-size: 12px;
-    transform: rotate(0);
-    line-height: 40px;
-  }
-
-  header .navbar .navbar-links .links .sub-menu li:hover > i.fa-chevron-down {
-    transform: rotate(-90deg);
-  }
-
-  header .navbar .navbar-links .links .sub-menu .more-sub-menu {
+  .nav__list ul ul {
     position: absolute;
     top: 0;
-    left: 100%;
-    display: none;
-  }
-
-  header .navbar .navbar-links .links .sub-menu .more-submenu:hover .more-sub-menu {
-    display: block;
-  }
-
-  header .navbar .navbar-links .sidebar-logo {
-    display: none;
-  }
-
-  .header-search {
-    display: flex;
-    align-items: center;
-  }
-
-  .header-search a {
-    padding: 0 10px;
-    color: #fff;
-    line-height: 70px;
-  }
-
-  /* hero section start now */
-  .hero {
-    background-color: rgb(3, 3, 3);
-  }
-
-  .hero-content {
-    padding: 120px 0;
-    text-align: center;
-  }
-
-  .hero-content h1 {
-    font-size: 50px;
-    color: #fff;
-    font-weight: bold;
-    line-height: 50px;
-    letter-spacing: 2px;
-  }
-
-  .hero-content p {
-    width: 70%;
-    margin: 20px auto 0;
-    color: #fff;
-  }
-
-  .hero-content a {
-    padding: 8px 15px;
+    left: 50%;
     background-color: #fff;
-    color: #333;
-    display: inline-block;
-    margin-top: 20px;
-    border: 1px solid transparent;
-    transition: 0.4s;
   }
 
-  .hero-content a:hover {
-    background-color: transparent;
-    color: #fff;
-    border: 1px solid #fff;
-  }
-
-  .row {
-    display: flex;
-    align-items: center;
-  }
-
-  .about-left {
-    width: 50%;
-    padding: 20px;
-  }
-
-  .about-left h2 {
-    font-size: 30px;
-    font-weight: bold;
-    letter-spacing: 3px;
-    color: #333;
-    margin: 10px 0;
-    line-height: 40px;
-  }
-
-  .about-left p {
-    font-size: 16px;
-    color: #333;
-  }
-
-  .about-left a {
-    padding: 8px 15px;
-    background-color: #333;
-    color: #fff;
-    display: inline-block;
-    margin-top: 20px;
-    border: 1px solid transparent;
-    transition: 0.4s;
-  }
-
-  .about-left a:hover {
-    background-color: transparent;
-    color: #333;
-    border: 1px solid #333;
-  }
-
-  .about-right {
-    width: 50%;
-  }
-  .about-right img {
-    width: 100%;
-    border-radius: 4px;
-  }
-
-  .scroll {
-    position: fixed;
-    right: 40px;
-    bottom: 30px;
-    background-color: #333;
-    padding: 15px;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-
-  .scroll:hover {
-    background: #fff;
-    border: 1px solid #333;
-  }
-
-  .scroll:hover i {
-    color: #333;
-  }
-
-  .scroll.top-menu {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-    transition: all 0.3s ease-in-out;
-  }
-
-  .scroll.show-btn {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-  }
-  .scroll i {
-    color: #fff;
-  }
-
-  @media (max-width: 991px) {
-    header .navbar {
-      width: 100%;
-      padding: 0 30px;
-    }
-
-    header .navbar .logo a {
-      font-size: 22px;
-    }
-
-    header .navbar .navbar-links .links li {
-      padding: 0 10px;
-    }
-
-    header .navbar .navbar-links {
-      display: block;
-      position: fixed;
-      top: 0;
-      left: -100%;
-      background: #1565ca;
-      max-width: 270px;
-      width: 100%;
-      padding: 20px;
-      line-height: 40px;
-      transition: all 0.5s ease;
-    }
-
-    header .navbar .logo a {
-      display: none;
-    }
-    header .navbar .logo i {
-      display: block;
-      cursor: pointer;
-    }
-    header .navbar .navbar-links .sidebar-logo {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    header .navbar .navbar-links .sidebar-logo a {
-      font-size: 24px;
-      font-weight: bold;
-      color: #fff;
-    }
-
-    header .navbar .navbar-links .sidebar-logo i {
-      font-size: 24px;
-      color: #fff;
-      cursor: pointer;
-      padding: 5px;
-    }
-
-    header .navbar .navbar-links .links {
-      display: block;
-      margin-top: 20px;
-    }
-
-    header .navbar .navbar-links .links li {
-      display: block;
-      line-height: 40px;
-    }
-
-    header .navbar .navbar-links .links li i.fa-chevron-down {
-      line-height: 40px;
-    }
-
-    header .navbar .navbar-links .links .sub-menu {
-      display: none;
-      position: relative;
-      top: 0;
-      left: 0;
-      box-shadow: none;
-    }
-    header .navbar .navbar-links .links .sub-menu li {
-      border: none;
-    }
-
-    header .navbar .navbar-links .links .sub-menu li.more-submenu {
-      position: relative;
-    }
-
-    header .navbar .navbar-links .links .sub-menu li.more-submenu .more-sub-menu {
-      display: none;
-      position: relative;
-      left: 0;
-      top: 0;
-    }
-
-    header .navbar .navbar-links .links li:hover .sub-menu {
-      display: none;
-    }
-
-    header .navbar .navbar-links .links li:hover .sub-menu,
-    header .navbar .navbar-links .links .sub-menu .more-submenu:hover .more-sub-menu {
-      display: none;
-    }
-
-    header .navbar .navbar-links .links li i.fa-chevron-down,
-    header .navbar .navbar-links .links li:hover i.fa-chevron-down {
-      transform: rotate(0deg);
-    }
-
-    header .navbar .navbar-links .links .sub-menu li i.fa-chevron-down {
-      transform: rotate(-90deg);
-    }
-
-    header .navbar .navbar-links .links li.active .sub-menu {
-      display: block;
-    }
-
-    header .navbar .navbar-links .links li.active > i {
-      transform: rotate(-180deg);
-    }
-    header .navbar .navbar-links .links li.active:hover > i {
-      transform: rotate(-180deg);
-    }
-
-    header .navbar .navbar-links .links .sub-menu li .more-sub-menu {
-      display: none;
-    }
-    header .navbar .navbar-links .links .sub-menu li i {
-      transform: rotate(-90deg);
-    }
-    header .navbar .navbar-links .links li.active .sub-menu li.show-menu .more-sub-menu {
-      display: block;
-    }
-
-    header .navbar .navbar-links .links .sub-menu li.show-menu i.fa-chevron-down {
-      transform: rotate(0deg);
-    }
-  }
-
-  @media (max-width: 370px) {
-    header .navbar .navbar-links {
-      max-width: 100%;
-    }
+  .nav__list li:hover > ul {
+    display: block;
   }
 </style>
 
 <script>
   // get all elements here now
-  const navMenuClose = document.getElementById("menu-close");
-  const sideMenuClose = document.getElementById("sidebar-close");
-  const links = document.querySelector("header .navbar .navbar-links");
-  const menuLi = document.querySelectorAll(
-    "header .navbar .navbar-links .links > li"
-  );
-  const submenu = document.querySelectorAll(
-    "header .navbar .navbar-links .links li ul > li"
-  );
+  const navMenuClose = document.getElementById('menu-close');
+  const sideMenuClose = document.getElementById('sidebar-close');
+  const links = document.querySelector('header .navbar .navbar-links');
+  const menuLi = document.querySelectorAll('header .navbar .navbar-links .links > li');
+  const submenu = document.querySelectorAll('header .navbar .navbar-links .links li ul > li');
 
-  navMenuClose.addEventListener("click", () => {
-    links.style.left = "0";
+  navMenuClose.addEventListener('click', () => {
+    links.style.left = '0';
   });
 
-  sideMenuClose.addEventListener("click", () => {
-    links.style.left = "-100%";
+  sideMenuClose.addEventListener('click', () => {
+    links.style.left = '-100%';
   });
 
-  document.addEventListener("click", (event) => {
+  document.addEventListener('click', (event) => {
     if (!links.contains(event.target) && !navMenuClose.contains(event.target)) {
-      links.style.left = "-100%";
+      links.style.left = '-100%';
     }
   });
 
   menuLi.forEach((item) => {
-    item.addEventListener("click", (e) => {
+    item.addEventListener('click', (e) => {
       menuLi.forEach((li) => {
-        li.classList.remove("active");
+        li.classList.remove('active');
       });
 
-      e.currentTarget.classList.toggle("active");
+      e.currentTarget.classList.toggle('active');
     });
   });
 
   submenu.forEach((item) => {
-    item.addEventListener("click", (e) => {
-      e.currentTarget.classList.toggle("show-menu");
+    item.addEventListener('click', (e) => {
+      e.currentTarget.classList.toggle('show-menu');
     });
   });
 
-  const navbar = document.querySelector("header");
-  const topMenu = document.querySelector(".top-menu");
+  const navbar = document.querySelector('header');
+  const topMenu = document.querySelector('.top-menu');
 
-  window.addEventListener("scroll", () => {
+  window.addEventListener('scroll', () => {
     const scrollHeight = window.scrollY;
     const navbarHeight = navbar.getBoundingClientRect().height;
 
     if (scrollHeight > navbarHeight) {
-      navbar.classList.add("nav-fix");
+      navbar.classList.add('nav-fix');
     } else {
-      navbar.classList.remove("nav-fix");
+      navbar.classList.remove('nav-fix');
     }
 
     console.log(scrollHeight);
 
     if (scrollHeight > 200) {
-      topMenu.classList.add("show-btn");
+      topMenu.classList.add('show-btn');
     } else {
-      topMenu.classList.remove("show-btn");
+      topMenu.classList.remove('show-btn');
     }
   });
 
-  topMenu.addEventListener("click", () => {
+  topMenu.addEventListener('click', () => {
     document.documentElement.scrollTop = 0;
   });
-
 </script>
