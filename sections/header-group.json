@@ -36,7 +36,7 @@
       }
     },
     "header": {
-      "type": "header",
+      "type": "new-header",
       "settings": {
         "logo_position": "middle-left",
         "menu": "menu-2",

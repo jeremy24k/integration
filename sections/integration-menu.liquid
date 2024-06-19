@@ -1,0 +1,52 @@
+<nav class="nav">
+  <ul class="nav__list">
+    {% for link in linklists.menu-2.links %}
+      {% assign child_list_handle = link.title | handleize %}
+      <li>
+        <a href="{{ link.url }}">{{ link.title }}</a>
+        {% if linklists[child_list_handle].links != blank %}
+          <ul>
+            {% for child_link in linklists[child_list_handle].links %}
+              {% assign child_link_handle = child_link.title | handleize %}
+              <li>
+                <a href="{{ child_link.url }}">{{ child_link.title }}</a>
+                {% if linklists[child_link_handle].links != blank %}
+                  <ul>
+                    {% for sub_child_link in linklists[child_link_handle].links %}
+                      <li>
+                        <a href="{{ sub_child_link.url }}">{{ sub_child_link.title }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</nav>
+
+{% comment %} 
+
+Explicación:
+
+{% assign child_list_handle = link.title | handleize %}: Esta línea se utiliza para crear una variable llamada child_list_handle que contiene el nombre de la lista de enlaces del menú desplegable actual, convertido a un formato compatible con el manejo de listas de enlaces de Shopify.
+
+{% if linklists[child_list_handle].links != blank %}: Esta línea verifica si la lista de enlaces del menú desplegable actual tiene enlaces. Si es así, se muestra el menú desplegable.
+
+{% for child_link in linklists[child_list_handle].links %}: Esta línea itera sobre los enlaces del menú desplegable actual.
+
+{% assign child_link_handle = child_link.title | handleize %}: Esta línea crea una variable llamada child_link_handle que contiene el nombre de la lista de enlaces del submenú actual, convertido a un formato compatible con el manejo de listas de enlaces de Shopify.
+
+{% if linklists[child_link_handle].links != blank %}: Esta línea verifica si la lista de enlaces del submenú actual tiene enlaces. Si es así, se muestra el submenú.
+
+{% for sub_child_link in linklists[child_link_handle].links %}: Esta línea itera sobre los enlaces del submenú actual.
+
+Recuerda:
+
+Asegúrate de que tus listas de enlaces en Shopify estén configuradas correctamente para que los menús desplegables funcionen como esperas.
+Puedes personalizar el estilo del menú desplegable utilizando CSS.
+
+{% endcomment %}
