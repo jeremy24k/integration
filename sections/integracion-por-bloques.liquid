@@ -1,0 +1,167 @@
+{{ 'styles-slider-moxiepro.css' | asset_url | stylesheet_tag  }}
+
+<section class="slider-moxiepro">
+
+    <div class="container-slider-moxiepro">
+
+        {% if section.settings.title != blank %}
+            <h2 class="title-slider-moxiepro">
+                {{ section.settings.title }}
+            </h2>
+        {% endif %}
+
+        {% if section.settings.sub_title != blank %}
+            <h3 class="sub-title-slider-moxiepro">
+                {{ section.settings.sub_title }}
+            </h3>
+        {% endif %}
+
+        <div class="swiper swiper-moxiepro">
+            <div class="background-buttom-slider"></div>
+            <div class="background-buttom-slider bg-left"></div>
+            <div class="image-slider-moxiepro">
+                <img src="https://cdn.shopify.com/s/files/1/0317/5694/3419/files/727A9788_1.png?v=1718920220" alt="">
+            </div>
+            <div class="swiper-wrapper container-slider-item-moxiepro">
+
+                {% if section.blocks.size > 0 %}
+                    {% for block in section.blocks %}
+                        {% if block.type == 'card-slider-moxiepro' %}
+
+                            <div class="swiper-slide item-slider-moxiepro">
+                                <div class="benefit-title">
+                                    {% if block.settings.card_header != blank %}
+                                     <p>
+                                         {{ block.settings.card_header}}
+                                     </p>
+                                    {% endif %}
+                                </div>
+
+                                {% if block.settings.card_title != blank or block.settings.card_description != blank %}
+                                    <div class="text-slider-moxiepro">
+                                        {% if block.settings.card_title != blank %}
+                                            <h3 class="title-text-moxiepro">
+                                            {{ block.settings.card_title }}         
+                                            </h3>
+                                        {% endif %}
+
+                                        {% if block.settings.card_description != blank %}
+                                            <p class="text-moxiepro">
+                                                {{ block.settings.card_description }}
+                                            </p>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+                             </div>
+
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+               
+            </div>
+
+            <div class="swiper-button-next button-slider-moxiepro button-slider-moxiepro-next">
+               <svg xmlns="http://www.w3.org/2000/svg" width="141" height="143" viewBox="0 0 141 143" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M114.275 44.0518C116.491 47.7362 112.038 54.3773 113.176 58.3388C114.355 62.434 121.573 65.5469 121.65 69.7294C121.727 73.9119 114.614 77.5131 113.613 81.615C112.612 85.717 117.306 92.0827 115.282 95.8198C113.284 99.5066 105.43 99.0143 102.488 102.128C99.5462 105.243 100.547 113.059 96.876 115.337C93.205 117.615 86.6781 113.187 82.7443 114.379C78.8105 115.57 75.5192 122.939 71.3779 123.061C67.1804 123.184 63.7473 116.036 59.6973 115.068C55.6472 114.101 49.2954 118.91 45.6174 116.906C41.9393 114.901 42.56 106.986 39.5085 104.048C36.4569 101.109 28.708 102.203 26.4922 98.5189C24.2765 94.8345 28.7293 88.1934 27.5915 84.2319C26.413 80.1367 19.1946 77.0239 19.1177 72.8413C19.0407 68.6588 26.1533 65.0576 27.1545 60.9557C28.1557 56.8538 23.4619 50.4881 25.4858 46.7509C27.4835 43.0641 35.338 43.5564 38.2797 40.4423C41.1193 37.4311 40.2205 29.5113 43.8915 27.2335C47.5625 24.9558 54.0894 29.3835 58.0233 28.1919C61.9571 27.0002 65.2484 19.6319 69.3897 19.5097C73.531 19.3874 77.0202 26.5346 81.0703 27.5024C85.1204 28.4701 91.4721 23.6603 95.1502 25.6652C98.7786 27.644 98.2075 35.5844 101.259 38.5231C104.21 41.3598 112.06 40.3674 114.275 44.0518Z" fill="#00234F"/>
+                    <path d="M51.9306 69.501C50.5504 69.5393 49.4626 70.6892 49.501 72.0694C49.5393 73.4496 50.6892 74.5374 52.0694 74.499L51.9306 69.501ZM89.8162 72.718C90.765 71.715 90.721 70.1327 89.718 69.1838L73.3725 53.7218C72.3694 52.773 70.7871 52.817 69.8383 53.82C68.8895 54.823 68.9334 56.4053 69.9365 57.3542L84.4658 71.0982L70.7218 85.6275C69.773 86.6306 69.817 88.2129 70.82 89.1617C71.823 90.1105 73.4053 90.0666 74.3542 89.0635L89.8162 72.718ZM52.0694 74.499L88.0694 73.499L87.9306 68.501L51.9306 69.501L52.0694 74.499Z" fill="white"/>
+                </svg>
+            </div>
+
+            <div class="swiper-button-prev button-slider-moxiepro button-slider-moxiepro-prev" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="141" height="143" viewBox="0 0 141 143" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M114.275 44.0518C116.491 47.7362 112.038 54.3773 113.176 58.3388C114.355 62.434 121.573 65.5469 121.65 69.7294C121.727 73.9119 114.614 77.5131 113.613 81.615C112.612 85.717 117.306 92.0827 115.282 95.8198C113.284 99.5066 105.43 99.0143 102.488 102.128C99.5462 105.243 100.547 113.059 96.876 115.337C93.205 117.615 86.6781 113.187 82.7443 114.379C78.8105 115.57 75.5192 122.939 71.3779 123.061C67.1804 123.184 63.7473 116.036 59.6973 115.068C55.6472 114.101 49.2954 118.91 45.6174 116.906C41.9393 114.901 42.56 106.986 39.5085 104.048C36.4569 101.109 28.708 102.203 26.4922 98.5189C24.2765 94.8345 28.7293 88.1934 27.5915 84.2319C26.413 80.1367 19.1946 77.0239 19.1177 72.8413C19.0407 68.6588 26.1533 65.0576 27.1545 60.9557C28.1557 56.8538 23.4619 50.4881 25.4858 46.7509C27.4835 43.0641 35.338 43.5564 38.2797 40.4423C41.1193 37.4311 40.2205 29.5113 43.8915 27.2335C47.5625 24.9558 54.0894 29.3835 58.0233 28.1919C61.9571 27.0002 65.2484 19.6319 69.3897 19.5097C73.531 19.3874 77.0202 26.5346 81.0703 27.5024C85.1204 28.4701 91.4721 23.6603 95.1502 25.6652C98.7786 27.644 98.2075 35.5844 101.259 38.5231C104.21 41.3598 112.06 40.3674 114.275 44.0518Z" fill="#00234F"/>
+                    <path d="M51.9306 69.501C50.5504 69.5393 49.4626 70.6892 49.501 72.0694C49.5393 73.4496 50.6892 74.5374 52.0694 74.499L51.9306 69.501ZM89.8162 72.718C90.765 71.715 90.721 70.1327 89.718 69.1838L73.3725 53.7218C72.3694 52.773 70.7871 52.817 69.8383 53.82C68.8895 54.823 68.9334 56.4053 69.9365 57.3542L84.4658 71.0982L70.7218 85.6275C69.773 86.6306 69.817 88.2129 70.82 89.1617C71.823 90.1105 73.4053 90.0666 74.3542 89.0635L89.8162 72.718ZM52.0694 74.499L88.0694 73.499L87.9306 68.501L51.9306 69.501L52.0694 74.499Z" fill="white"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    {% if section.blocks.size > 0 %}
+        {% for block in section.blocks %}
+            {% if block.type == 'letra' %}
+                <h1>{{ block.settings.letra }}</h1>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+</section>
+
+<script>
+    const swiper = new Swiper('.swiper-moxiepro', {
+        direction: 'horizontal',
+        navigation: {
+            nextEl: '.swiper-button-next',
+             prevEl: '.swiper-button-prev',
+        },
+        on: {
+        fromEdge: function() {
+            document.querySelector('.swiper-button-next').style.display = this.isEnd ? 'none' : 'block';
+            document.querySelector('.swiper-button-prev').style.display = this.isBeginning ? 'none' : 'block';
+            },
+        },
+        breakpoints: {
+            1300: {
+                slidesPerView: 3,
+                spaceBetween: 36,
+            },
+            1024: {
+              slidesPerView: 2,
+              spaceBetween: 36,
+            },
+            300: {
+              slidesPerView: 1,
+              spaceBetween: 20,
+            }
+        }
+    });
+</script>
+
+{% schema %}
+{
+    "name": "Slider MoxiePro",
+    "limit": 1,
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Why MoxiePro?"
+        },
+        {
+            "type": "text",
+            "id": "sub_title",
+            "label": "Sub Title",
+            "default": "The ultimate tool for teachers, counselors, and educators"
+        } 
+    ],
+    "blocks": [
+        {
+            "type": "card-slider-moxiepro",
+            "name": "Card Slider MoxiePro",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "card_header",
+                    "label": "Card Header"
+                },
+                {
+                    "type": "text",
+                    "id": "card_title",
+                    "label": "Card Title"
+                },
+                {
+                    "type": "richtext",
+                    "id": "card_description",
+                    "label": "Card Description"
+                }
+            ]
+        } 
+    ],
+    "presets": [
+        {
+            "category": "Slider",
+            "name": "Slider MoxiePro"
+        }
+    ]
+}
+{% endschema %}
