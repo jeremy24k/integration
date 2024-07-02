@@ -12,7 +12,7 @@
     "main": {
       "type": "product-template",
       "settings": {
-        "dynamic_button_checkbox": true
+        "dynamic_button_checkbox": false
       }
     },
     "image-with-text": {
