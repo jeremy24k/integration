@@ -40,7 +40,7 @@
             Add To Card
         </button>
 
-        {% if section.settings.dynamic_button_checkbox == true %}
+        {% if section.settings.dynamic_button_checkbox == false %}
           {{ form | payment_button }}
         {% endif %}
       {% endform %}
@@ -56,7 +56,7 @@
         "type": "checkbox",
         "id": "dynamic_button_checkbox",
         "label": "Disable Dynamic Button",
-        "default": false
+        "default": true
       }
     ]
   }
