@@ -39,7 +39,10 @@
         <button type="submit" name="add" id="AddToCard" class="btn btn-secondary btn-lg w-100">
             Add To Card
         </button>
-        {{ form | payment_button }}
+
+        {% if section.settings.dynamic_button_checkbox == true %}
+          {{ form | payment_button }}
+        {% endif %}
       {% endform %}
     </div>
   </div>
