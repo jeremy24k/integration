@@ -1270,3 +1270,10 @@ class BulkAdd extends HTMLElement {
 if (!customElements.get('bulk-add')) {
   customElements.define('bulk-add', BulkAdd);
 }
+
+document.querySelector('#sort_by').addEventListener("change", function(e) {  
+  var url = new URL(window.location.href);  
+  url.searchParams.set("sort_by", e.currentTarget.value);  
+
+  window.location.href = url.toString();  
+});

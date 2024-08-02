@@ -1,29 +1,50 @@
 <section class="container container-collection py-4">
-    <h2 class="text-center my-3">
-        {{ section.settings.tltle }}
-    </h2>
-    <div class="row">
-        {% for product in collections[section.settings.featured_collection].products %}
-            {% assign image = product.featured_media.preview_image %}
-            <div class="col">
-                <div class="card" style="width: 18rem;">
-                    {% if image != blank %}
-                        <img class="card-img-top" src="{{ image | image_url }}" alt="{{ product.title }}">
-                        {% else %}
-                            {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
-                    {% endif %}
-                    <div class="card-body">
-                        <h3>
-                            <a href="{{ product.url }}">
-                                {{ product.title }}
-                            </a>
-                        </h3>
-                        <p>{{ product.price | money }}</p>
+    {% assign featured_collection = collections[section.settings.featured_collection] %}
+    {% paginate featured_collection.products by 4 %}
+        <h2 class="text-center my-3">
+            {{ section.settings.tltle }}
+        </h2>
+        
+        <div class="row justify-content-center">
+            <select name="sorting" id="sort_by" class="form-select form-select-sm w-25">
+                {% for option in featured_collection.sort_options %}
+                    <option value="{{ option.value }}"
+                        {% if option.value == featured_collection.sort_by %} 
+                           selected="selected"
+                        {% endif %}
+                    >
+                        {{ option.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="row">
+            {% for product in collections[section.settings.featured_collection].products %}
+                {% assign image = product.featured_media.preview_image %}
+                <div class="col">
+                    <div class="card" style="width: 18rem;">
+                        {% if image != blank %}
+                            <img class="card-img-top" src="{{ image | image_url }}" alt="{{ product.title }}">
+                            {% else %}
+                                {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
+                        {% endif %}
+                        <div class="card-body">
+                            <h3>
+                                <a href="{{ product.url }}">
+                                    {{ product.title }}
+                                </a>
+                            </h3>
+                            <p>{{ product.price | money }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-    </div>
+            {% endfor %}
+        </div>
+        {%- if paginate.pages > 1 -%}
+            {% render 'pagination', paginate: paginate, anchor: '' %}
+        {%- endif -%}
+    {% endpaginate %}
 </section>
 
 

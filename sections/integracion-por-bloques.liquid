@@ -31,9 +31,9 @@
                             <div class="swiper-slide item-slider-moxiepro">
                                 <div class="benefit-title">
                                     {% if block.settings.card_header != blank %}
-                                     <p>
-                                         {{ block.settings.card_header}}
-                                     </p>
+                                        <p>
+                                            {{ block.settings.card_header}}
+                                        </p>
                                     {% endif %}
                                 </div>
 
@@ -41,7 +41,7 @@
                                     <div class="text-slider-moxiepro">
                                         {% if block.settings.card_title != blank %}
                                             <h3 class="title-text-moxiepro">
-                                            {{ block.settings.card_title }}         
+                                                {{ block.settings.card_title }}         
                                             </h3>
                                         {% endif %}
 
@@ -164,4 +164,193 @@
         }
     ]
 }
+{% endschema %}
+
+<div class="checks {% if column.settings.svg_type %}active{% endif %}">
+    <div class="icon-x">
+        {% render 'svg-check' %}
+    </div>
+    <div class="icon-check">
+        {% render 'svg-x' %} 
+    </div>
+</div>
+
+{% if section.blocks.size > 0 %}
+    {% for row in section.blocks %}
+        {% if row.type == "new_row" %}
+            <tr>
+            {% for column in section.blocks %}
+                {% if column.type == "new_column" %}
+                    <th class="column-1">
+                        {% if column.settings.image_table != blank %}
+                            <img class="img-table-row" src="{{ column.settings.image_table | img_url: 'master' }}" alt="{{ image.title }}">
+                        {% endif %}
+
+                        {% if column.settings.text_table != blank %}
+                            <p class="text-table-row">
+                                {{  column.settings.text_table }}
+                            </p>
+                        {% endif %}
+
+                        {% if column.settings.svg_type %}
+                            {% render 'svg-check' %}
+                        {% else %}
+                            {% render 'svg-x' %} 
+                        {% endif %}
+                    </th>
+                {% endif %}
+            {% endfor %}
+            </tr>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% if section.blocks.size > 0 %}
+    {% for row in section.blocks %}
+        {% if row.type == "new_row" %}
+            <tr>
+                {% assign column_index = 1 %}
+                {% for column in row.blocks %}
+                    {% if column.type == "new_column" %}
+                        <th class="column-{{ column_index }}">
+                            {% if column.settings.image_table != blank %}
+                                <img class="img-table-row" src="{{ column.settings.image_table }}" alt="{{ image.title }}">
+                            {% endif %}
+
+                            {% if column.settings.text_table != blank %}
+                                <p class="text-table-row">
+                                    {{ column.settings.text_table }}
+                                </p>
+                            {% endif %}
+
+                            {% if column.settings.svg_type %}
+                                {% if column_index == X %} 
+                                    {% render 'svg-check' %}
+                                {% else %}
+                                    {% render 'svg-x' %}
+                                {% endif %}
+                            {% endif %}
+                        </th>
+                        {% assign column_index = column_index | plus: 1 %}
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{{ 'styles-table.css' | asset_url | stylesheet_tag }}
+
+<section class="section-table">
+    <div class="global-contianer-table">
+        <div class="container-text-table">
+            <h1 class="title-table">
+                Why Choose ProBright® Advanced?
+            </h1>
+            <p class="text-table">
+                How ProBright® Advanced compares to other dental powders on the pet health care market.
+            </p>
+        </div>
+        <table class="container-table">
+            <thead class="container-logos-table">
+                {% for row in section.blocks %}
+                    {% if row.type == "new_row_logos" %}
+                        <tr>
+                            {% for column in section.blocks %}
+                                {% if column.type == "new_column_logos" %}
+                                    <th class="column-1">
+                                        {% if column.settings.img_logos != blank %}
+                                            <img class="img-table-row" src="{{ column.settings.img_logos | img_url: 'master' }}" alt="{{ image.title }}">
+                                        {% endif %}
+                                    </th>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </thead>
+            <tbody>
+                {% if section.blocks.size > 0 %}
+                    {% for row in section.blocks %}
+                        {% if row.type == "new_row" %}
+                            <tr>
+
+                                {% for column in section.blocks %}
+                                    {% if column.type == "new_column" %}
+                                        <th class="column-1">
+                                            {% if column.settings.image_table != blank %}
+                                                <img class="img-table-row" src="{{ column.settings.image_table | img_url: 'master' }}" alt="{{ image.title }}">
+                                            {% endif %}
+
+                                            {% if column.settings.text_table != blank %}
+                                                <p class="text-table-row">
+                                                    {{  column.settings.text_table }}
+                                                </p>
+                                            {% endif %}
+                                        </th>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% for column in section.blocks %}
+                                    {% if column.type == "new_column_check" %}
+                                        <th class="column-1">
+                                            {% if column.settings.svg_type %}
+                                                {% render 'svg-check' %}
+                                            {% else %}
+                                                {% render 'svg-x' %}
+                                            {% endif %}
+                                        </th>
+                                    {% endif %}
+                                {% endfor %}
+
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+{% schema %}
+    {
+        "name": "Section Table",
+        "class": "section_table",
+        "blocks": [
+            {
+                "name": "Add New Row",
+                "type": "new_row",
+                "settings": [
+                    {
+                        "type": "image_picker",
+                        "id": "image_table",
+                        "label": "Image Table"
+                    },
+                    {
+                        "type": "text",
+                        "id": "text_table",
+                        "label": "Text Table"
+                    },
+                    {
+                        "type": "checkbox",
+                        "id": "svg_type",
+                        "label": "Choose Check or X by Default 1",
+                        "default": true
+                    },
+                    {
+                        "type": "checkbox",
+                        "id": "svg_type_2",
+                        "label": "Choose Check or X by Default 2",
+                        "default": true
+                    }
+                ]
+            }
+        ],
+        "presets": [
+        {
+          "name": "Section Table"
+        }
+      ]
+    }
+
 {% endschema %}
