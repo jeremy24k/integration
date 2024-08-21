@@ -1,0 +1,318 @@
+{{ 'styles-header-new-home.css' | asset_url | stylesheet_tag }}
+
+<nav class="header-new-hp" id="header-new-hp">
+    <div>
+        <div class="overlay-menu" id="overlay-menu">
+        </div>
+        <div class="ctn-header-new-hp">
+            <ul class="ctn-link ctn-menu hide-movil">
+                {% assign links = section.settings.navigation.links %}
+                {% assign first_half = links | slice: 0, 4 %}  
+
+                {% assign is_first_link = true %}
+
+                {% for link in first_half %}
+                    <li>
+                        <a href="{{ link.url }}" class="link">
+                            {{ link.title }}
+                        </a>
+
+                        {% if link.links.size > 0 %}
+                            {% render "arrow-link" %}
+                        {% endif %}
+
+                        {% if link.links != blank %}
+                            <ul class="sub-link">
+                                <div class="ctn-sub-link {% unless forloop.first %} padding {% endunless %}">
+                                    {% assign last_link_2 = link.links.size | minus: 1 %}
+                                    {% for link_2 in link.links %}
+                                        <div class="column-link">
+                                            {% if is_first_link %}
+                                                <p class="tlt-link-list">
+                                                    {{ link_2.title }}
+                                                </p>
+                                            {% else %}
+                                                <a class="link-sub-menu" href="{{ link_2.url }}">
+                                                    <div class="ctn-icon">
+                                                        {% render "arrow-icon" %}
+                                                    </div>
+                                                    <p class="txt-link">{{ link_2.title }}</p>
+                                                </a>
+                                            {% endif %}
+                                            
+                                            {% if link_2.links != blank %}
+                                                {% assign last_link_3 = link_2.links.size | minus: 1 %} 
+                                                
+                                                {% for link_3 in link_2.links %}
+                                                    <a class="link-sub-menu" href="{{ link_3.url }}">
+                                                        <div class="ctn-icon">
+                                                            {% render "arrow-icon" %}
+                                                        </div>
+                                                        <p class="txt-link">{{ link_3.title }}</p>
+
+                                                        {% if forloop.last and forloop.index0 == last_link_3 and forloop.index0 == 0 %}  
+                                                            <div class="icon-new">
+                                                                {% render "icon-new" %}
+                                                            </div>
+                                                        {% endif %}  
+                                                    </a>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                    
+                                    {% if forloop.first %}
+                                        {% if section.settings.img_link != blank %}
+                                            <div class="ctn-img-sub-menu">
+                                                <img src="{{ section.settings.img_link |  image_url }}" alt="">
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </ul>
+                        {% endif %}
+                    </li>
+                    {% assign is_first_link = false %}
+                {% endfor %}
+            </ul>
+                
+            {% if section.settings.logo_menu != blank %}
+                <a class="ctn-logo ctn-menu" href="/">
+                    <img src="{{ section.settings.logo_menu | image_url }}" alt="">
+                </a>
+            {% endif %}
+
+            <ul class="ctn-link ctn-menu" id="item-menu">
+                {% assign second_half = links | slice: 4, links.size %}
+
+                <li class="item-menu-hide hide-movil">
+                    {% if section.settings.txt_promotion != blank %}
+                        <a href="{{ section.settings.url_link_promotion }}" class="link promosion">
+                            {% render "icon-ticket" %}
+                            {{ section.settings.txt_promotion }}
+                        </a>
+                    {% endif %}
+                </li>
+                
+                {% for link in second_half %}
+                    <li class="hide-movil item-menu-hide">
+                        <a href="{{ link.url }}" class="link">
+                            {{ link.title }}
+                        </a>
+
+                        {% if link.links.size > 0 %}
+                            {% render "arrow-link" %}
+                        {% endif %}
+
+                        {% if link.links != blank %}
+                            <ul class="sub-link">
+                                <div class="ctn-sub-link padding">
+                                    {% for link_2 in link.links %}
+                                        <div class="column-link">
+                                            <a class="link-sub-menu" href="{{ link_2.url }}">
+                                                <div class="ctn-icon">
+                                                    {% render "arrow-icon" %}
+                                                </div>
+                                                <p class="txt-link">{{ link_2.title }}</p>
+                                            </a>
+                                            {% if link_2.links != blank %}
+                                                {% for link_3 in link_2.links %}
+                                                <a class="link-sub-menu" href="{{ link_3.url }}">
+                                                    <div class="ctn-icon">
+                                                        {% render "arrow-icon" %}
+                                                    </div>
+                                                    <p class="txt-link">{{ link_3.title }}</p>
+                                                </a>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </ul>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+        
+                <li class="item-menu-hide" id="btn-search">
+                    <button class="search-btn">
+                        {% render "icon-search-new-hp" %}
+                    </button>
+                </li>
+    
+                <li id="search" class="search hide-movil">
+                    <form action="{{ routes.search_url }}" method="get">
+                        <div class="ctn-search" id="ctn-search">
+                            {% render "icon-search-new-hp" %}
+                            <input type="search" name="q" placeholder="Search" aria-label="Search">
+                            <div class="btn-close" id="btn-close">
+                                {% render 'icon-close' %}
+                            </div>
+                        </div>
+                    </form>
+                </li>
+        
+                <li class="item-menu-hide">
+                    <a href="{{ routes.cart_url }}" class="cart-btn">
+                        {% render "icon-card-new-hp" %}
+                        <div class="account-card" id="cart-item-count" data-cart-count-bubble >
+                            <p data-cart-count>
+                                {{ cart.item_count }}
+                            </p>
+                        </div>
+                    </a>
+                </li> 
+
+                <div class="btn-movil" id="btn-movil">
+                    <div class="line line-1"> </div>
+                    <div class="line line-2"> </div>
+                    <div class="line line-3"> </div>
+                </div>
+            </ul>
+        </div>
+
+        {% comment %} acccodion menu responsive new homepage {% endcomment %}
+        <ul class="menu-accordion-movil" id="menu-accordion-movil">
+            <div class="search-accordion-movil">
+                <form action="{{ routes.search_url }}" method="get">
+                    {% render "icon-search-new-hp" %}
+                    <input type="search" name="q" id="SearchMovil" placeholder="Search" aria-label="Search" autofocus >
+                </form>
+            </div>
+
+            {% for link in section.settings.navigation.links %}
+                
+                {% for link_2 in link.links %} 
+                    {% if link_2.links != blank %}
+                        <li class="ctn-item-accorodion-menu">
+                            <a class="ctn-tlt-accordion-menu" href="{{ link_2.url }}">
+                                <p class="tlt-accordion-menu" >
+                                    {{ link_2.title }}
+                                </p>
+                                <div class="icon-accordion">
+                                    <div class="line line-1"> </div>
+                                    <div class="line"> </div>
+                                </div>
+                            </a>
+                            {% if link_2.links != blank %}
+                                <div class="ctn-accordion-menu">
+                                    <div class="accordion-menu">
+                                        {% for link_3 in link_2.links %}
+                                            <a href="{{ link_3.url }}" class="item-accordion-menu">
+                                                {{ link_3.title }}
+
+                                                {% if forloop.last and forloop.index0 == last_link_3 and forloop.index0 == 0 %}  
+                                                    <div class="icon-new">
+                                                        {% render "icon-new" %}
+                                                    </div>
+                                                {% endif %}  
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+
+            <li class="ctn-item-accorodion-menu link-subscriptions">
+                {% if section.settings.txt_subsription  %}
+                    <a class="ctn-tlt-accordion-menu" href="{{ section.settings.url_link_subsription }}">
+                        <p class="tlt-accordion-menu">
+                            {{ section.settings.txt_subsription }}
+                        </p>
+                        {% render "icon-subscription" %}
+                    </a >
+                {% endif %}
+            </li>
+
+            {% for link in section.settings.navigation.links %}
+                {% if section.settings.navigation.links != blank %}
+                    {% unless forloop.first %}
+                        <li class="ctn-item-accorodion-menu">
+                            <a class="ctn-tlt-accordion-menu" href="{{ link.url }}">
+                                <p class="tlt-accordion-menu">
+                                    {{ link.title }}
+                                </p>
+
+                                {% if link.links.size > 0 %}
+                                    <div class="icon-accordion">
+                                        <div class="line line-1"> </div>
+                                        <div class="line"> </div>
+                                    </div>
+                                {% endif %}
+                            </a>
+                            {% if link.links != blank %}
+                                <div class="ctn-accordion-menu">
+                                    <div class="accordion-menu">
+                                        {% for link_2 in link.links %} 
+                                            <a href="{{ link_2.url }}" class="item-accordion-menu">
+                                                {{ link_2.title }}
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </li>
+                    {% endunless %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+</nav>
+
+{{ 'header-new-home.js' | asset_url | script_tag }}
+
+{% schema %}
+    {
+        "name": "Header",
+        "class": "new-header",
+        "tag": "header",
+        "settings": [
+            {
+                "type": "link_list",
+                "id": "navigation",
+                "label": "Navigation Menu Select",
+                "default": "main-menu",
+                "info": "Place a ''#'' in the link url that you want to not redirect to any page"
+            },
+            {
+                "type": "image_picker",
+                "id": "logo_menu",
+                "label": "Logo Menu"
+            },
+            {
+                "type": "text",
+                "id": "txt_promotion",
+                "default": "Get $10",
+                "label": "Text Link Promotion"
+            },
+            {
+                "type": "url",
+                "id": "url_link_promotion",
+                "label": "Url Link Promotion"
+            },
+            {
+                "type": "image_picker",
+                "id": "img_link",
+                "label": "Image of the first drop-down menu"
+            },
+            {
+                "type": "text",
+                "id": "txt_subsription",
+                "default": "Subscription Benefits",
+                "label": "Text Subscription Benefits Menu Movil"
+            },
+            {
+                "type": "url",
+                "id": "url_link_subsription",
+                "label": "Url Link Subscription Benefits Menu Movil"
+            },
+        ],
+        "presets": [
+            {
+                "name": "Header New Home"
+            }
+        ]
+    }
+{% endschema %}
