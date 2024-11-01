@@ -9,15 +9,11 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-page",
-      "settings": {
-        "padding_top": 28,
-        "padding_bottom": 28
-      }
+    "section-test": {
+      "type": "section-test"
     }
   },
   "order": [
-    "main"
+    "section-test"
   ]
 }

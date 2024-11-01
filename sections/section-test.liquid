@@ -1,0 +1,68 @@
+<div>
+
+    <product-custom></product-custom>
+
+    {% for block in section.blocks %}
+        {% if block.type == 'product' %}
+
+            {% assign product = block.settings.product | product %}
+
+            <template class="template">
+                <div class="ctn-product">
+                    <h1 class="title">
+                        {% if block.settings.title_custom != blank %}
+                            {{ block.settings.title_custom }}
+                        {% else %}
+                            {{ product.title }}
+                        {% endif %}
+                    </h1>
+
+                    <p class="description">
+                        {{ product.description }}
+                    </p>
+
+                    <img src="{{ product.featured_image | image_url }}" alt="{{ product_1.title }}">
+                </div>
+            </template>
+        {% endif %}
+
+        <button class="cambiar-producto {% if forloop.first %}active{% endif %}">
+            cambiar producto
+        </button>
+    {% endfor %}
+    
+   
+</div>
+
+{% schema %}
+    {
+        "name": "Test Section",
+        "class": "test_section",
+        "blocks": [
+            {
+                "type": "product",
+                "name": "Product",
+                "settings": [
+                    {
+                        "type": "product",
+                        "id": "product",
+                        "label": "Product"
+                    },
+                    {
+                        "type": "text",
+                        "id": "title_custom",
+                        "label": "Title"
+                    }
+                ]
+            }
+        ],
+        "presets": [
+            {
+                "name": "Test Section",
+                "category": "Custom"
+            }
+        ]
+    }
+{% endschema %}
+
+{{  "component.js" | asset_url | script_tag}}
