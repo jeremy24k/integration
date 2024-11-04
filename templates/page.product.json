@@ -10,7 +10,37 @@
 {
   "sections": {
     "section-test": {
-      "type": "section-test"
+      "type": "section-test",
+      "blocks": {
+        "product_H3dx3m": {
+          "type": "product",
+          "settings": {
+            "product": "camisa-de-manga-corta",
+            "title_custom": ""
+          }
+        },
+        "product_KKGMCG": {
+          "type": "product",
+          "settings": {
+            "product": "pantalon",
+            "title_custom": ""
+          }
+        },
+        "product_i7XzNY": {
+          "type": "product",
+          "settings": {
+            "product": "sueter",
+            "title_custom": ""
+          }
+        }
+      },
+      "block_order": [
+        "product_H3dx3m",
+        "product_KKGMCG",
+        "product_i7XzNY"
+      ],
+      "settings": {
+      }
     }
   },
   "order": [
