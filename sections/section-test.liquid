@@ -18,8 +18,8 @@
                                     </div>
                                 {% endfor %}
                             </div>
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
+                            <div class="swiper-button-next"> </div>
+                            <div class="swiper-button-prev"> </div>
                         </div>
 
                         <div thumbsSlider="" class="swiper mySwiper ctn-small-slider">
@@ -32,6 +32,8 @@
                                     </div>
                                 {% endfor %}
                             </div>
+                            <div class="swiper-button-next"> </div>
+                            <div class="swiper-button-prev"> </div>
                         </div>
                     </div>
 
@@ -45,21 +47,49 @@
                                 {% endif %}
                             </h1>
 
-                            <p class="txt">
+                            <div class="txt">
                                 {{ product.description }}
-                            </p>
-                        </div>
+                            </div>
 
-                        {% for block in section.blocks %}
-                            <button class="cambiar-producto {% if forloop.first %}active{% endif %}" >
-                                <img src="{{ block.settings.product.featured_image | image_url }}" alt="" style="width: 100px;">
-                            </button>
-                        {% endfor %}    
-
-                        <div class="product-txt">
                             <p class="price">
                                 {{ product.price | money }}
                             </p>
+                     
+                        </div>
+
+
+                        <div class="ctn-btns">
+                            {% for block in section.blocks %}
+
+                                <button class="btn-product {% if forloop.first %}active{% endif %}" >
+                                    <div class="ctn-img">
+                                        <img src="{{ block.settings.product.featured_image | image_url }}" alt="">
+                                    </div>
+
+                                    <p class="title">
+                                        {{ block.settings.product.title }}
+                                    </p>    
+    
+                                    <p class="price"> 
+                                        {{ block.settings.product.price | money }}
+                                    </p>
+                                </button>
+                            
+                            {% endfor %}    
+                        </div>
+
+                        <div class="product-txt">
+                            {% form 'product', product, class:'product-form', id:'AddToCartForm' %}  
+                                {% assign product = block.settings.product | product %}
+                                
+                                {% if product.variants.size > 0 %}  
+                                    <input type="hidden" name="id" value="{{ product.variants[0].id }}">  
+                                {% endif %}  
+
+                                <button type="submit" name="add" id="AddToCard" class="btn-add-to-cart">  
+                                    Add To Cart  
+                                </button>  
+                            {% endform %}  
                         </div>
                     </div>
                 </div>
