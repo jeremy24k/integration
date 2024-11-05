@@ -1,37 +1,71 @@
 <div>
-
     <product-custom></product-custom>
 
     {% for block in section.blocks %}
         {% if block.type == 'product' %}
-
             {% assign product = block.settings.product | product %}
 
             <template class="template">
-                <div class="ctn-product">
-                    <h1 class="title">
-                        {% if block.settings.title_custom != blank %}
-                            {{ block.settings.title_custom }}
-                        {% else %}
-                            {{ product.title }}
-                        {% endif %}
-                    </h1>
+                {{ "component.css" | asset_url | stylesheet_tag }}
 
-                    <p class="description">
-                        {{ product.description }}
-                    </p>
+                <div class="ctn">
+                    <div class="ctn-slider">
+                        <div class="swiper mySwiper2 ctn-main-slider">
+                            <div class="swiper-wrapper">
+                                {% for image in product.images %}
+                                    <div class="swiper-slide main-slider-img">
+                                        <img src="{{ image.src | image_url }}" alt="{{ image.alt }}" />
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
 
-                    <img src="{{ product.featured_image | image_url }}" alt="{{ product_1.title }}">
+                        <div thumbsSlider="" class="swiper mySwiper ctn-small-slider">
+                            <div class="swiper-wrapper">
+                                {% for image in product.images %}
+                                    <div class="swiper-slide">
+                                        <div class="slider-img">
+                                            <img src="{{ image.src | image_url }}" alt="{{ image.alt }}" />
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ctn-txt">
+                        <div class="product-txt">
+                            <h1 class="title">
+                                {% if block.settings.title_custom != blank %}
+                                    {{ block.settings.title_custom }}
+                                {% else %}
+                                    {{ product.title }}
+                                {% endif %}
+                            </h1>
+
+                            <p class="txt">
+                                {{ product.description }}
+                            </p>
+                        </div>
+
+                        {% for block in section.blocks %}
+                            <button class="cambiar-producto {% if forloop.first %}active{% endif %}" >
+                                <img src="{{ block.settings.product.featured_image | image_url }}" alt="" style="width: 100px;">
+                            </button>
+                        {% endfor %}    
+
+                        <div class="product-txt">
+                            <p class="price">
+                                {{ product.price | money }}
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </template>
         {% endif %}
-
-        <button class="cambiar-producto {% if forloop.first %}active{% endif %}">
-            cambiar producto
-        </button>
     {% endfor %}
-    
-   
 </div>
 
 {% schema %}
@@ -65,4 +99,4 @@
     }
 {% endschema %}
 
-{{  "component.js" | asset_url | script_tag}}
+{{ "component.js" | asset_url | script_tag }}

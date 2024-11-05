@@ -302,7 +302,6 @@
                                         </th>
                                     {% endif %}
                                 {% endfor %}
-
                             </tr>
                         {% endif %}
                     {% endfor %}
@@ -311,46 +310,3 @@
         </table>
     </div>
 </section>
-
-{% schema %}
-    {
-        "name": "Section Table",
-        "class": "section_table",
-        "blocks": [
-            {
-                "name": "Add New Row",
-                "type": "new_row",
-                "settings": [
-                    {
-                        "type": "image_picker",
-                        "id": "image_table",
-                        "label": "Image Table"
-                    },
-                    {
-                        "type": "text",
-                        "id": "text_table",
-                        "label": "Text Table"
-                    },
-                    {
-                        "type": "checkbox",
-                        "id": "svg_type",
-                        "label": "Choose Check or X by Default 1",
-                        "default": true
-                    },
-                    {
-                        "type": "checkbox",
-                        "id": "svg_type_2",
-                        "label": "Choose Check or X by Default 2",
-                        "default": true
-                    }
-                ]
-            }
-        ],
-        "presets": [
-        {
-          "name": "Section Table"
-        }
-      ]
-    }
-
-{% endschema %}

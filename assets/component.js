@@ -1,46 +1,76 @@
-class ProductCustom extends HTMLElement {
-    constructor() {
-        super();
-
-        this.template = document.querySelectorAll('template');
-        this.clonedDOM = [];
-
-        console.log(this.template);
-        
-    }
-
-    connectedCallback() {
-       let btn = document.querySelectorAll('.cambiar-producto');
-
-       btn.forEach((btnElement, index) => {
-            btnElement.addEventListener('click', () => {
-                if (!btnElement.classList.contains('active')) {
-                    btn.forEach((btnElement) => {
-                        btnElement.classList.remove('active');
-                    });
+window.addEventListener('DOMContentLoaded', function() {
+    class ProductCustom extends HTMLElement {
+        constructor() {
+            super();
     
+            this.templates = document.querySelectorAll('template');
+            this.clonedDOMs = [];
+    
+            console.log(this.templates);
+            
+            this.templates.forEach((template) => {
+                this.clonedDOMs.push(document.importNode(template.content, true));
+            });
+        }
+    
+        connectedCallback() {
+            if (this.clonedDOMs.length > 0) {
+                this.appendChild(this.clonedDOMs[0].cloneNode(true));
+                this.initializeSwiper();
+            }
+    
+            this.initializeButtons();
+        }
+    
+        initializeButtons() {
+            let btns = document.querySelectorAll('.cambiar-producto');
+            console.log(btns);
+    
+            btns.forEach((btnElement, index) => {
+                btnElement.addEventListener('click', () => {
+
+                    btns.forEach((el) => el.classList.remove('active'));
                     btnElement.classList.add('active');
     
-                    this.innerHTML = '';
+                    const ctnSlider = this.querySelector('.ctn-slider');
+                    const changingTxts = this.querySelectorAll('.product-txt');
 
-                    this.appendChild(this.clonedDOM[index].cloneNode(true));
-                }
+                    ctnSlider.innerHTML = '';
+                    changingTxts.forEach(changingTxt => changingTxt.innerHTML = '');
+                    
+                    const newSliderContent = this.clonedDOMs[index].querySelector('.ctn-slider').cloneNode(true);
+                    const newTxtContents = this.clonedDOMs[index].querySelectorAll('.product-txt');
+
+                    ctnSlider.replaceWith(newSliderContent);
+
+                    changingTxts.forEach((changingTxt, i) => {
+                        changingTxt.replaceWith(newTxtContents[i].cloneNode(true));
+                    });
+    
+                    this.initializeSwiper();
+                });
             });
-       });
-
-        this.template.forEach((item) => {
-            this.clonedDOM.push(document.importNode(item.content, true));
-        });
-
-        if (this.clonedDOM.length > 0) {
-            this.appendChild(this.clonedDOM[0].cloneNode(true));
         }
-
-        console.log(this.clonedDOM);
-        
-        
+    
+        initializeSwiper() {
+            var swiper = new Swiper(".mySwiper", {
+                spaceBetween: 10,
+                slidesPerView: 6,
+                freeMode: true,
+                watchSlidesProgress: true,
+            });
+            var swiper2 = new Swiper(".mySwiper2", {
+                spaceBetween: 10,
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
+                thumbs: {
+                    swiper: swiper,
+                },
+            });
+        }
     }
-
-}
-
-customElements.define('product-custom', ProductCustom);
+    
+    customElements.define('product-custom', ProductCustom);
+});
