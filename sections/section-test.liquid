@@ -1,6 +1,104 @@
 <div>
     <product-custom></product-custom>
 
+    {% assign current_product = product %}
+
+    <template class="main-template">
+        {{ "component.css" | asset_url | stylesheet_tag }}
+
+        <div class="ctn">
+            <div class="ctn-slider">
+                <div class="swiper mySwiper2 ctn-main-slider">
+                    <div class="swiper-wrapper">
+                        {% for image in current_product.images %}
+                            <div class="swiper-slide main-slider-img">
+                                <img src="{{ image.src | image_url }}" alt="{{ image.alt }}" />
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-button-next"> </div>
+                    <div class="swiper-button-prev"> </div>
+                </div>
+
+                <div thumbsSlider="" class="swiper mySwiper ctn-small-slider">
+                    <div class="swiper-wrapper">
+                        {% for image in current_product.images %}
+                            <div class="swiper-slide">
+                                <div class="slider-img">
+                                    <img src="{{ image.src | image_url }}" alt="{{ image.alt }}" />
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="ctn-txt">
+                <div class="product-txt">
+                    <h1 class="title">
+                        {{ current_product.title }}
+                    </h1>
+
+                    <div class="txt">
+                        {{ current_product.description }}
+                    </div>
+
+                    <p class="price">
+                        {{ current_product.price | money }}
+                    </p>
+                </div>
+
+                <div class="ctn-btns">
+                    {% assign metafield_products = product.metafields.custom.ctn_btns %}
+                    {% if metafield_products %}
+                        {% assign metafield_products_array = metafield_products | split: ',' %}
+                        {% if metafield_products_array.size > 1 %}
+                            <!-- First button with current product -->
+                            <button class="btn-product active" data-index="0">
+                                <div class="ctn-img">
+                                    <img src="{{ current_product.featured_image | image_url }}" alt="">
+                                </div>
+
+                                <p class="title">
+                                    {{ current_product.title }}
+                                </p>    
+
+                                <p class="price"> 
+                                    {{ current_product.price | money }}
+                                </p>
+                            </button>
+                        {% endif %}
+                        {% for metafield_product in metafield_products_array %}
+                            {% assign metafield_product_obj = all_products[metafield_product] %}
+                            <button class="btn-product" data-index="{{ forloop.index }}">
+                                <div class="ctn-img">
+                                    <img src="{{ metafield_product_obj.featured_image | image_url }}" alt="">
+                                </div>
+
+                                <p class="title">
+                                    {{ metafield_product_obj.title }}
+                                </p>    
+
+                                <p class="price"> 
+                                    {{ metafield_product_obj.price | money }}
+                                </p>
+                            </button>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                {% form 'product', current_product, class:'product-form', id:'AddToCartForm' %}
+                    {% if current_product.variants.size > 0 %}
+                        <input type="hidden" name="id" value="{{ current_product.variants[0].id }}">
+                    {% endif %}
+                    <button type="submit" name="add" id="AddToCard" class="btn-add-to-cart">
+                        Add To Cart
+                    </button>
+                {% endform %}
+            </div>
+        </div>
+    </template>
+
     {% for block in section.blocks %}
         {% if block.type == 'product' %}
             {% assign product = block.settings.product | product %}
@@ -32,8 +130,6 @@
                                     </div>
                                 {% endfor %}
                             </div>
-                            <div class="swiper-button-next"> </div>
-                            <div class="swiper-button-prev"> </div>
                         </div>
                     </div>
 
@@ -54,43 +150,16 @@
                             <p class="price">
                                 {{ product.price | money }}
                             </p>
-                     
                         </div>
 
-
-                        <div class="ctn-btns">
-                            {% for block in section.blocks %}
-
-                                <button class="btn-product {% if forloop.first %}active{% endif %}" >
-                                    <div class="ctn-img">
-                                        <img src="{{ block.settings.product.featured_image | image_url }}" alt="">
-                                    </div>
-
-                                    <p class="title">
-                                        {{ block.settings.product.title }}
-                                    </p>    
-    
-                                    <p class="price"> 
-                                        {{ block.settings.product.price | money }}
-                                    </p>
-                                </button>
-                            
-                            {% endfor %}    
-                        </div>
-
-                        <div class="product-txt">
-                            {% form 'product', product, class:'product-form', id:'AddToCartForm' %}  
-                                {% assign product = block.settings.product | product %}
-                                
-                                {% if product.variants.size > 0 %}  
-                                    <input type="hidden" name="id" value="{{ product.variants[0].id }}">  
-                                {% endif %}  
-
-                                <button type="submit" name="add" id="AddToCard" class="btn-add-to-cart">  
-                                    Add To Cart  
-                                </button>  
-                            {% endform %}  
-                        </div>
+                        {% form 'product', product, class:'product-form', id:'AddToCartForm' %}
+                            {% if product.variants.size > 0 %}
+                                <input type="hidden" name="id" value="{{ product.variants[0].id }}">
+                            {% endif %}
+                            <button type="submit" name="add" id="AddToCard" class="btn-add-to-cart">
+                                Add To Cart
+                            </button>
+                        {% endform %}
                     </div>
                 </div>
             </template>
@@ -99,34 +168,34 @@
 </div>
 
 {% schema %}
-    {
-        "name": "Test Section",
-        "class": "test_section",
-        "blocks": [
-            {
-                "type": "product",
-                "name": "Product",
-                "settings": [
-                    {
-                        "type": "product",
-                        "id": "product",
-                        "label": "Product"
-                    },
-                    {
-                        "type": "text",
-                        "id": "title_custom",
-                        "label": "Title"
-                    }
-                ]
-            }
-        ],
-        "presets": [
-            {
-                "name": "Test Section",
-                "category": "Custom"
-            }
-        ]
-    }
+{
+    "name": "Test Section",
+    "class": "test_section",
+    "blocks": [
+        {
+            "type": "product",
+            "name": "Product",
+            "settings": [
+                {
+                    "type": "product",
+                    "id": "product",
+                    "label": "Product"
+                },
+                {
+                    "type": "text",
+                    "id": "title_custom",
+                    "label": "Title"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Test Section",
+            "category": "Custom"
+        }
+    ]
+}
 {% endschema %}
 
 {{ "component.js" | asset_url | script_tag }}

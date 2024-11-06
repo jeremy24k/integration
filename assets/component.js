@@ -2,9 +2,11 @@ window.addEventListener('DOMContentLoaded', function() {
     class ProductCustom extends HTMLElement {
         constructor() {
             super();
-    
+            
+            this.main_template = document.querySelector('template.main-template');
             this.templates = document.querySelectorAll('template');
             this.clonedDOMs = [];
+            this.currentDOM = this.main_template.content.cloneNode(true);
     
             console.log(this.templates);
             
@@ -14,8 +16,9 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     
         connectedCallback() {
-            if (this.clonedDOMs.length > 0) {
-                this.appendChild(this.clonedDOMs[0].cloneNode(true));
+            // Append the main_template content by default
+            if (this.currentDOM) {
+                this.appendChild(this.currentDOM);
                 this.initializeSwiper();
             }
     
@@ -34,15 +37,12 @@ window.addEventListener('DOMContentLoaded', function() {
     
                     const ctnSlider = this.querySelector('.ctn-slider');
                     const changingTxts = this.querySelectorAll('.product-txt');
-
                     ctnSlider.innerHTML = '';
                     changingTxts.forEach(changingTxt => changingTxt.innerHTML = '');
                     
                     const newSliderContent = this.clonedDOMs[index].querySelector('.ctn-slider').cloneNode(true);
                     const newTxtContents = this.clonedDOMs[index].querySelectorAll('.product-txt');
-
                     ctnSlider.replaceWith(newSliderContent);
-
                     changingTxts.forEach((changingTxt, i) => {
                         changingTxt.replaceWith(newTxtContents[i].cloneNode(true));
                     });
@@ -54,28 +54,10 @@ window.addEventListener('DOMContentLoaded', function() {
     
         initializeSwiper() {
             var swiper = new Swiper(".mySwiper", {
-           
+                spaceBetween: 10,
+                slidesPerView: 6,
                 freeMode: true,
                 watchSlidesProgress: true,
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
-                breakpoints: {
-                    375: {
-                        slidesPerView: 4,
-                    },
-                    561: {
-                        slidesPerView: 6,
-                    },
-                    769: {
-                      slidesPerView: 4,
-                    },
-                    1024: {
-                        spaceBetween: 10,
-                        slidesPerView: 6,
-                    },
-                },
             });
             var swiper2 = new Swiper(".mySwiper2", {
                 spaceBetween: 10,

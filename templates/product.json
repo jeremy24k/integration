@@ -10,10 +10,7 @@
 {
   "sections": {
     "main": {
-      "type": "product-template",
-      "settings": {
-        "dynamic_button_checkbox": false
-      }
+      "type": "section-test",
     },
     "image-with-text": {
       "type": "image-with-text",
