@@ -1,7 +1,11 @@
 <div>
+
+
+    
     <product-custom></product-custom>
 
     {% assign current_product = product %}
+    {% assign metafield_products = product.metafields.custom.ctn_btns.value %}
 
     <template class="main-template">
         {{ "component.css" | asset_url | stylesheet_tag }}
@@ -50,55 +54,82 @@
                     </p>
                 </div>
 
-                <div class="ctn-btns">
-                    {% assign metafield_products = product.metafields.custom.ctn_btns.value %}
+                {% if metafield_products %}
+                    <div class="ctn-btns">
 
-                    <!-- First button with current product -->
-                    <button class="btn-product active" data-index="0">
-                        <div class="ctn-img">
-                            <img src="{{ current_product.featured_image | image_url }}" alt="">
-                        </div>
-
-                        <p class="title">
-                            {{ current_product.title }}
-                        </p>    
-
-                        <p class="price"> 
-                            {{ current_product.price | money }}
-                        </p>
-                    </button>
-                    
-                    {% for metafield_product in  product.metafields.custom.ctn_btns.value %}
-                        <button class="btn-product" data-index="{{ forloop.index }}">
+                        <!-- First button with current product -->
+                        <button class="btn-product active" data-index="0">
                             <div class="ctn-img">
-                                <img src="{{ metafield_product.featured_image | image_url }}" alt="">
+                                <img src="{{ current_product.featured_image | image_url }}" alt="">
                             </div>
 
                             <p class="title">
-                                {{ metafield_product.title }}
+                                {{ current_product.title }}
                             </p>    
 
                             <p class="price"> 
-                                {{ metafield_product.price | money }}
+                                {{ current_product.price | money }}
                             </p>
                         </button>
-                    {% endfor %}
-                </div>
+                        
+                        {% for metafield_product in metafield_products %}
+                            <button class="btn-product" data-index="{{ forloop.index }}">
+                                <div class="ctn-img">
+                                    <img src="{{ metafield_product.featured_image | image_url }}" alt="">
+                                </div>
 
-                {% form 'product', current_product, class:'product-form', id:'AddToCartForm' %}
-                    {% if current_product.variants.size > 0 %}
-                        <input type="hidden" name="id" value="{{ current_product.variants[0].id }}">
-                    {% endif %}
-                    <button type="submit" name="add" id="AddToCard" class="btn-add-to-cart">
-                        Add To Cart
-                    </button>
-                {% endform %}
+                                <p class="title">
+                                    {{ metafield_product.title }}
+                                </p>    
+
+                                <p class="price"> 
+                                    {{ metafield_product.price | money }}
+                                </p>
+                            </button>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% assign metaobject_upsell = product.metafields.custom.upsell_add_product %}  
+                {% assign upsell =  metaobject_upsell.value %}
+
+                {% if metaobject_upsell %}
+                    <div class="upsell">
+                        <p class="tlt">
+                            {{ upsell.title }}
+                        </p>
+
+                        <div class="ctn-btn">
+                            <button class="btn" id="btn_yes">
+                                {{ upsell.yes }}
+                                <p class="txt">
+                                    {{ upsell.text_yes }}
+                                </p>
+                            </button>
+                            <button class="btn active" id="btn_no">
+                                {{ upsell.not }}
+                                <p class="txt">
+                                    {{ upsell.text_not }}
+                                </p>
+                            </button>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="product-txt">
+                    {% form 'product', current_product, class:'product-form', id:'AddToCartForm' %}
+                        {% if current_product.variants.size > 0 %}
+                            <input class="jeremy" type="hidden" name="id" value="{{ current_product.variants[0].id }}">
+                        {% endif %}
+                        <button type="submit" name="add" id="AddToCard" class="btn-add-to-cart">
+                            Add To Cart
+                        </button>
+                    {% endform %}
+                </div>
             </div>
         </div>
     </template>
 
-    {% assign metafield_products = product.metafields.custom.ctn_btns.value %}
-    
     {% for metafield_product in metafield_products  %}
 
         <template class="template">
@@ -153,17 +184,23 @@
                     </div>
                 </div>
 
-                {% form 'product', metafield_product, class:'product-form', id:'AddToCartForm' %}
-                    {% if metafield_product.variants.size > 0 %}
-                        <input type="hidden" name="id" value="{{ metafield_product.variants[0].id }}">
-                    {% endif %}
-                    <button type="submit" name="add" id="AddToCard" class="btn-add-to-cart">
-                        Add To Cart
-                    </button>
-                {% endform %}
+                <div class="product-txt">
+                    {% form 'product', metafield_product, class:'product-form', id:'AddToCartForm' %}
+                        {% if metafield_product.variants.size > 0 %}
+                            <input type="hidden" name="id" value="{{ metafield_product.variants[0].id }}">
+                        {% endif %}
+                        <button type="submit" name="add" id="AddToCard" class="btn-add-to-cart">
+                            Add To Cart
+                        </button>
+                    {% endform %}
+                </div>
+                
             </div>
         </template>
     {% endfor %}
+
+
+   
 </div>
 
 {% schema %}

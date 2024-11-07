@@ -58,6 +58,10 @@ window.addEventListener('DOMContentLoaded', function() {
                 slidesPerView: 6,
                 freeMode: true,
                 watchSlidesProgress: true,
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
             });
             var swiper2 = new Swiper(".mySwiper2", {
                 spaceBetween: 10,
