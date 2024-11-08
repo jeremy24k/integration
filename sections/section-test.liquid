@@ -126,14 +126,27 @@
                 {% endif %}
 
                 <div class="product-txt">
-                    {% form 'product', current_product, class:'product-form', id:'AddToCartForm' %}
-                        {% if current_product.variants.size > 0 %}
-                            <input type="hidden" name="id" value="{{ current_product.variants[0].id }}">
-                        {% endif %}
-                        <button type="submit" name="add" id="AddToCard" class="btn-add-to-cart">
-                            Add To Cart
-                        </button>
-                    {% endform %}
+                    <div class="ctn-form">
+                        {% form 'product', current_product, class:'product-form', id:'AddToCartForm' %}
+                            {% if current_product.variants.size > 0 %}
+                                <input type="hidden" name="id" value="{{ current_product.variants[0].id }}">
+                            {% endif %}
+                            <button type="submit" name="add" id="AddToCard" class="btn-add-to-cart">
+                                Add To Cart
+                            </button>
+                        {% endform %}
+                    </div>
+
+                    <div class="upsell-form">
+                        {% form 'product', upsell_product, class:'product-form', id:'AddToCartForm' %}
+                            {% if upsell_product.variants.size > 0 %}
+                                <input type="hidden" name="id" value="{{ upsell_product.variants[0].id }}">
+                            {% endif %}
+                            <button type="submit" name="add" id="AddToCard" class="btn-add-to-cart">
+                                Add To Cart
+                            </button>
+                        {% endform %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -200,16 +213,28 @@
                 </div>
 
                 <div class="product-txt">
-                    {% form 'product', metafield_product, class:'product-form', id:'AddToCartForm' %}
-                        {% if metafield_product.variants.size > 0 %}
-                            <input type="hidden" name="id" value="{{ metafield_product.variants[0].id }}">
-                        {% endif %}
-                        <button type="submit" name="add" id="AddToCard" class="btn-add-to-cart">
-                            Add To Cart
-                        </button>
-                    {% endform %}
+                    <div class="ctn-form">
+                        {% form 'product', metafield_product, class:'product-form', id:'AddToCartForm' %}
+                            {% if metafield_product.variants.size > 0 %}
+                                <input type="hidden" name="id" value="{{ metafield_product.variants[0].id }}">
+                            {% endif %}
+                            <button type="submit" name="add" id="AddToCard" class="btn-add-to-cart">
+                                Add To Cart
+                            </button>
+                        {% endform %}
+                    </div>
+
+                    <div class="upsell-form">
+                        {% form 'product', upsell_product, class:'product-form', id:'AddToCartForm' %}
+                            {% if upsell_product.variants.size > 0 %}
+                                <input type="hidden" name="id" value="{{ upsell_product.variants[0].id }}">
+                            {% endif %}
+                            <button type="submit" name="add" id="AddToCard" class="btn-add-to-cart">
+                                Add To Cart
+                            </button>
+                        {% endform %}
+                    </div>
                 </div>
-                
             </div>
         </template>
     {% endfor %}

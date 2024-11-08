@@ -66,6 +66,8 @@ window.addEventListener('DOMContentLoaded', function() {
 
         showUpsellItems() {
             const infoUpsell = document.querySelectorAll('.upsell-info');
+            const formUpsell = document.querySelectorAll('.upsell-form');
+
 
             // Show upsell items if not already added
             if (!this.upsellAdded) {
@@ -75,18 +77,23 @@ window.addEventListener('DOMContentLoaded', function() {
             }
 
             // Hide main product price when upsell is active
+            formUpsell.forEach(form => form.classList.add('active'));
             infoUpsell.forEach(info => info.classList.add('active'));
+            document.querySelectorAll('.ctn-form').forEach(form => form.style.display = 'none');
             document.querySelectorAll('.current-price').forEach(price => price.style.display = 'none');
             this.initializeSwiper();
         }
 
         hideUpsellItems() {
             const infoUpsell = document.querySelectorAll('.upsell-info');
+            const formUpsell = document.querySelectorAll('.upsell-form');
 
             // Remove upsell items and show main product price
+            formUpsell.forEach(form => form.classList.remove('active'));
             infoUpsell.forEach(info => info.classList.remove('active'));
             this.removeUpsellItemsFromSliders('.main-slider-img', 'upsell-item-main');
             this.removeUpsellItemsFromSliders('.mini-slider-img', 'upsell-item-mini');
+            document.querySelectorAll('.ctn-form').forEach(form => form.style.display = 'block');
             document.querySelectorAll('.current-price').forEach(price => price.style.display = 'block');
             this.upsellAdded = false;
             this.initializeSwiper();
@@ -138,6 +145,10 @@ window.addEventListener('DOMContentLoaded', function() {
                 slidesPerView: 6,
                 freeMode: true,
                 watchSlidesProgress: true,
+                navigation: {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                },
             });
             
             this.mainSwiper = new Swiper(".mySwiper2", {
