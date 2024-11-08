@@ -1,11 +1,12 @@
 <div>
-
-
-    
     <product-custom></product-custom>
 
     {% assign current_product = product %}
     {% assign metafield_products = product.metafields.custom.ctn_btns.value %}
+
+    {% assign metaobject_upsell = product.metafields.custom.upsell_add_product %}  
+    {% assign upsell = metaobject_upsell.value %}
+    {% assign upsell_product = upsell.product.value %}
 
     <template class="main-template">
         {{ "component.css" | asset_url | stylesheet_tag }}
@@ -13,26 +14,28 @@
         <div class="ctn">
             <div class="ctn-slider">
                 <div class="swiper mySwiper2 ctn-main-slider">
-                    <div class="swiper-wrapper">
+                    <div class="swiper-wrapper main-slider-img">
+
                         {% for image in current_product.images %}
-                            <div class="swiper-slide main-slider-img">
+                            <div class="swiper-slide ctn-img">
                                 <img src="{{ image.src | image_url }}" alt="{{ image.alt }}" />
                             </div>
                         {% endfor %}
+
                     </div>
                     <div class="swiper-button-next"> </div>
                     <div class="swiper-button-prev"> </div>
                 </div>
 
                 <div thumbsSlider="" class="swiper mySwiper ctn-small-slider">
-                    <div class="swiper-wrapper">
+                    <div class="swiper-wrapper mini-slider-img ">
+
                         {% for image in current_product.images %}
-                            <div class="swiper-slide">
-                                <div class="slider-img">
-                                    <img src="{{ image.src | image_url }}" alt="{{ image.alt }}" />
-                                </div>
+                            <div class="swiper-slide ctn-img {% if forloop.first %} swiper-slide-active {% endif %}">
+                                <img src="{{ image.src | image_url }}" alt="{{ image.alt }}" />
                             </div>
                         {% endfor %}
+
                     </div>
                     <div class="swiper-button-next"> </div>
                     <div class="swiper-button-prev"> </div>
@@ -49,9 +52,18 @@
                         {{ current_product.description }}
                     </div>
 
-                    <p class="price">
-                        {{ current_product.price | money }}
-                    </p>
+                    <div class="ctn-price">
+                        <p class="current-price">
+                            {{ current_product.price | money }}
+                        </p>
+    
+                        {% if metafield_products %}
+                            <p class="price upsell-info">
+                                {{ upsell_product.price | money }}
+                            </p>
+                        {% endif %}
+                    </div>
+                
                 </div>
 
                 {% if metafield_products %}
@@ -90,9 +102,6 @@
                     </div>
                 {% endif %}
 
-                {% assign metaobject_upsell = product.metafields.custom.upsell_add_product %}  
-                {% assign upsell =  metaobject_upsell.value %}
-
                 {% if metaobject_upsell %}
                     <div class="upsell">
                         <p class="tlt">
@@ -100,13 +109,13 @@
                         </p>
 
                         <div class="ctn-btn">
-                            <button class="btn" id="btn_yes">
+                            <button class="btn-upsell" id="btn_yes">
                                 {{ upsell.yes }}
                                 <p class="txt">
                                     {{ upsell.text_yes }}
                                 </p>
                             </button>
-                            <button class="btn active" id="btn_no">
+                            <button class="btn-upsell active" id="btn_no">
                                 {{ upsell.not }}
                                 <p class="txt">
                                     {{ upsell.text_not }}
@@ -119,7 +128,7 @@
                 <div class="product-txt">
                     {% form 'product', current_product, class:'product-form', id:'AddToCartForm' %}
                         {% if current_product.variants.size > 0 %}
-                            <input class="jeremy" type="hidden" name="id" value="{{ current_product.variants[0].id }}">
+                            <input type="hidden" name="id" value="{{ current_product.variants[0].id }}">
                         {% endif %}
                         <button type="submit" name="add" id="AddToCard" class="btn-add-to-cart">
                             Add To Cart
@@ -138,9 +147,9 @@
             <div class="ctn">
                 <div class="ctn-slider">
                     <div class="swiper mySwiper2 ctn-main-slider">
-                        <div class="swiper-wrapper">
+                        <div class="swiper-wrapper main-slider-img">
                             {% for image in metafield_product.images %}
-                                <div class="swiper-slide main-slider-img">
+                                <div class="swiper-slide ctn-img">
                                     <img src="{{ image.src | image_url }}" alt="{{ image.alt }}" />
                                 </div>
                             {% endfor %}
@@ -150,12 +159,10 @@
                     </div>
 
                     <div thumbsSlider="" class="swiper mySwiper ctn-small-slider">
-                        <div class="swiper-wrapper">
+                        <div class="swiper-wrapper mini-slider-img">
                             {% for image in metafield_product.images %}
-                                <div class="swiper-slide">
-                                    <div class="slider-img">
-                                        <img src="{{ image.src | image_url }}" alt="{{ image.alt }}" />
-                                    </div>
+                                <div class="swiper-slide ctn-img">
+                                    <img src="{{ image.src | image_url }}" alt="{{ image.alt }}" />
                                 </div>
                             {% endfor %}
                         </div>
@@ -178,9 +185,17 @@
                             {{ metafield_product.description }}
                         </div>
 
-                        <p class="price">
-                            {{ metafield_product.price | money }}
-                        </p>
+                        <div class="ctn-price">
+                            <p class="current-price">
+                                {{ metafield_product.price | money }}
+                            </p>
+        
+                            {% if metafield_products %}
+                                <p class="price upsell-info">
+                                    {{ upsell_product.price | money }}
+                                </p>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
 
@@ -199,8 +214,23 @@
         </template>
     {% endfor %}
 
+    <template class="upsell-template">
+        {% for item in upsell_product.images %}
+            <div class="swiper-slide upsell-item-main">
+                <img src="{{ item.src | image_url }}" alt="{{ item.alt }}" />
+            </div>
+        {% endfor %}    
 
-   
+        
+        {% for item in upsell_product.images %}
+            <div class="swiper-slide upsell-item-mini">
+                <div class="slider-img">
+                    <img src="{{ item.src | image_url }}" alt="{{ item.alt }}" />
+                </div>
+            </div>
+        {% endfor %}
+    </template>
+
 </div>
 
 {% schema %}

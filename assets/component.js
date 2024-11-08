@@ -2,79 +2,156 @@ window.addEventListener('DOMContentLoaded', function() {
     class ProductCustom extends HTMLElement {
         constructor() {
             super();
-            
-            this.main_template = document.querySelector('template.main-template');
+            // Gather all templates and upsell template content
             this.templates = document.querySelectorAll('template');
-            this.clonedDOMs = [];
-            this.currentDOM = this.main_template.content.cloneNode(true);
-    
-            console.log(this.templates);
-            
-            this.templates.forEach((template) => {
-                this.clonedDOMs.push(document.importNode(template.content, true));
-            });
+            this.clonedDOMs = Array.from(this.templates).map(template => document.importNode(template.content, true));
+            this.upsellTemplate = document.querySelector('.upsell-template');
+            this.upsellTemplateContent = this.upsellTemplate.content;
+            this.upsellAdded = false; // Track if upsell elements have been added
         }
-    
+
         connectedCallback() {
-            // Append the main_template content by default
-            if (this.currentDOM) {
-                this.appendChild(this.currentDOM);
+            // Append the main template and initialize buttons and Swiper
+            if (this.clonedDOMs.length > 0) {
+                this.appendChild(this.clonedDOMs[0].cloneNode(true));
+                this.initializeUpsellButtons();
                 this.initializeSwiper();
             }
-    
-            this.initializeButtons();
+            this.initializeProductButtons();
         }
-    
-        initializeButtons() {
-            let btns = document.querySelectorAll('.btn-product');
-            console.log(btns);
-    
-            btns.forEach((btnElement, index) => {
-                btnElement.addEventListener('click', () => {
 
-                    btns.forEach((el) => el.classList.remove('active'));
-                    btnElement.classList.add('active');
-    
+        initializeProductButtons() {
+            // Toggle product buttons and update content based on selection
+            const btns = document.querySelectorAll('.btn-product');
+            btns.forEach((btn, index) => {
+                btn.addEventListener('click', () => {
+                    btns.forEach(el => el.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // Update sliders and text content for the selected product
                     const ctnSlider = this.querySelector('.ctn-slider');
                     const changingTxts = this.querySelectorAll('.product-txt');
-                    ctnSlider.innerHTML = '';
-                    changingTxts.forEach(changingTxt => changingTxt.innerHTML = '');
-                    
                     const newSliderContent = this.clonedDOMs[index].querySelector('.ctn-slider').cloneNode(true);
                     const newTxtContents = this.clonedDOMs[index].querySelectorAll('.product-txt');
+                    
                     ctnSlider.replaceWith(newSliderContent);
-                    changingTxts.forEach((changingTxt, i) => {
-                        changingTxt.replaceWith(newTxtContents[i].cloneNode(true));
-                    });
-    
+                    changingTxts.forEach((txt, i) => txt.replaceWith(newTxtContents[i].cloneNode(true)));
+
+                    this.upsellAdded = false;
+                    this.resetUpsellButtons();
                     this.initializeSwiper();
                 });
             });
         }
-    
-        initializeSwiper() {
-            var swiper = new Swiper(".mySwiper", {
+
+        initializeUpsellButtons() {
+            // Toggle upsell buttons y maneja la visualización de los elementos de upsell
+            const btnUpsell = document.querySelectorAll('.btn-upsell');
+            const btnYes = document.getElementById('btn_yes');
+            const btnNo = document.getElementById('btn_no');
+        
+            btnUpsell.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    btnUpsell.forEach(el => el.classList.remove('active'));
+                    btn.classList.add('active');
+        
+                    if (btnYes.classList.contains('active')) {
+                        this.showUpsellItems();
+                    } else {
+                        this.hideUpsellItems();
+                    }
+                });
+            });
+        }
+
+        showUpsellItems() {
+            const infoUpsell = document.querySelectorAll('.upsell-info');
+
+            // Show upsell items if not already added
+            if (!this.upsellAdded) {
+                this.addUpsellItemsToSliders('.main-slider-img', '.upsell-item-main');
+                this.addUpsellItemsToSliders('.mini-slider-img', '.upsell-item-mini');
+                this.upsellAdded = true;
+            }
+
+            // Hide main product price when upsell is active
+            infoUpsell.forEach(info => info.classList.add('active'));
+            document.querySelectorAll('.current-price').forEach(price => price.style.display = 'none');
+            this.initializeSwiper();
+        }
+
+        hideUpsellItems() {
+            const infoUpsell = document.querySelectorAll('.upsell-info');
+
+            // Remove upsell items and show main product price
+            infoUpsell.forEach(info => info.classList.remove('active'));
+            this.removeUpsellItemsFromSliders('.main-slider-img', 'upsell-item-main');
+            this.removeUpsellItemsFromSliders('.mini-slider-img', 'upsell-item-mini');
+            document.querySelectorAll('.current-price').forEach(price => price.style.display = 'block');
+            this.upsellAdded = false;
+            this.initializeSwiper();
+        }
+
+        addUpsellItemsToSliders(sliderClass, upsellClass) {
+            // Clone and prepend upsell items to the specified slider
+            const upsellItems = this.upsellTemplateContent.querySelectorAll(upsellClass);
+            const sliders = document.querySelectorAll(sliderClass);
+
+            for (let i = upsellItems.length - 1; i >= 0; i--) {
+                sliders.forEach(slider => {
+                    slider.insertBefore(upsellItems[i].cloneNode(true), slider.firstChild);
+                });
+            }
+        }
+
+        removeUpsellItemsFromSliders(sliderClass, upsellClass) {
+            // Remove upsell items from the specified slider
+            const sliders = document.querySelectorAll(sliderClass);
+            sliders.forEach(slider => {
+                Array.from(slider.children).forEach(child => {
+                    if (child.classList.contains(upsellClass)) {
+                        slider.removeChild(child);
+                    }
+                });
+            });
+        }
+
+        resetUpsellButtons() {
+            // Reset upsell button state to "No" as default
+            const btnYes = document.getElementById('btn_yes');
+            const btnNo = document.getElementById('btn_no');
+            btnYes.classList.remove('active');
+            btnNo.classList.add('active');
+        }
+
+       initializeSwiper() {
+            if (this.mainSwiper) {
+                this.mainSwiper.destroy(true, true);
+            }
+            if (this.thumbnailSwiper) {
+                this.thumbnailSwiper.destroy(true, true);
+            }
+
+            // Re-initialize Swiper instances
+            this.thumbnailSwiper = new Swiper(".mySwiper", {
                 spaceBetween: 10,
                 slidesPerView: 6,
                 freeMode: true,
                 watchSlidesProgress: true,
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
             });
-            var swiper2 = new Swiper(".mySwiper2", {
+            
+            this.mainSwiper = new Swiper(".mySwiper2", {
                 spaceBetween: 10,
                 navigation: {
                     nextEl: ".swiper-button-next",
                     prevEl: ".swiper-button-prev",
                 },
                 thumbs: {
-                    swiper: swiper,
+                    swiper: this.thumbnailSwiper,
                 },
             });
         }
     }
-    
-    customElements.define('product-custom', ProductCustom);
+
+    customElements.define('product-custom', ProductCustom);     
 });
