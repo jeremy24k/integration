@@ -23,11 +23,12 @@ window.addEventListener('DOMContentLoaded', function() {
         initializeProductButtons() {
             // Toggle product buttons and update content based on selection
             const btns = document.querySelectorAll('.btn-product');
+            const btnYes = document.getElementById('btn_yes');
             btns.forEach((btn, index) => {
                 btn.addEventListener('click', () => {
                     btns.forEach(el => el.classList.remove('active'));
                     btn.classList.add('active');
-                    
+
                     // Update sliders and text content for the selected product
                     const ctnSlider = this.querySelector('.ctn-slider');
                     const changingTxts = this.querySelectorAll('.product-txt');
@@ -38,8 +39,11 @@ window.addEventListener('DOMContentLoaded', function() {
                     changingTxts.forEach((txt, i) => txt.replaceWith(newTxtContents[i].cloneNode(true)));
 
                     this.upsellAdded = false;
-                    this.resetUpsellButtons();
                     this.initializeSwiper();
+
+                    if (btnYes.classList.contains('active')) {
+                        this.showUpsellItems();
+                    }
                 });
             });
         }
@@ -123,14 +127,6 @@ window.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        resetUpsellButtons() {
-            // Reset upsell button state to "No" as default
-            const btnYes = document.getElementById('btn_yes');
-            const btnNo = document.getElementById('btn_no');
-            btnYes.classList.remove('active');
-            btnNo.classList.add('active');
-        }
-
        initializeSwiper() {
             if (this.mainSwiper) {
                 this.mainSwiper.destroy(true, true);
@@ -148,6 +144,21 @@ window.addEventListener('DOMContentLoaded', function() {
                 navigation: {
                     nextEl: ".swiper-button-next",
                     prevEl: ".swiper-button-prev",
+                },
+                breakpoints: {
+                    375: {
+                        slidesPerView: 4,
+                    },
+                    561: {
+                        slidesPerView: 6,
+                    },
+                    769: {
+                      slidesPerView: 4,
+                    },
+                    1024: {
+                        spaceBetween: 10,
+                        slidesPerView: 6,
+                    },
                 },
             });
             
