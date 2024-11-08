@@ -63,9 +63,18 @@
     margin-bottom: 20px;
 }
 
+.ctn .ctn-txt .txt {
+    margin-bottom: 20px;
+}
+
 .ctn .ctn-txt .txt p {
     font-size: 16px;
     margin-bottom: 20px;
+} 
+
+.ctn .ctn-txt .txt li {
+    font-size: 16px;
+    margin-bottom: 10px;
 } 
 
 .ctn .ctn-txt .current-price {
